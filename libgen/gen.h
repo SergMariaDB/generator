@@ -1,3 +1,4 @@
+#include <memory>
 #include <vector>
 #include <boost/filesystem.hpp>
 #include <boost/gil.hpp>
@@ -7,11 +8,12 @@
 
 namespace gen {
 	struct options {
-		boost::filesystem::path filepath;
+		::boost::filesystem::path filepath;
 		uint32_t color = 0;
-		std::vector<boost::filesystem::path> blend_files;
+		std::vector<::boost::filesystem::path> blend_files;
 	};
 
+    std::shared_ptr<::boost::program_options::options_description> Optr();
 	boost::program_options::options_description_easy_init& ProgramOptionsDescription();
 	const options& Init(int argc, char** argv); // optional, for options
 

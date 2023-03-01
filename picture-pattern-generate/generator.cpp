@@ -54,18 +54,18 @@ int main(int argc, char** argv)
 
 	auto img = gen::GeneratePatternImage(width, height, red, green, blue);
 	auto v = boost::gil::view(img);
-
+    
+        std::ofstream file(filepath.c_str(), std::ios_base::out | std::ios_base::binary);
 	auto ext = filepath.extension();
 	if (ext == ".bmp") {
-		boost::gil::write_view(filepath.c_str(), v, boost::gil::bmp_tag());
+		boost::gil::write_view(file, v, boost::gil::bmp_tag());
 		std::cout << filepath << " written" << std::endl;
 	}
 	else if (ext == ".png") {
-		boost::gil::write_view(filepath.c_str(), v, boost::gil::png_tag());
+		boost::gil::write_view(file, v, boost::gil::png_tag());
 		std::cout << filepath << " written" << std::endl;
 	}
 	else if (ext == ".jpg" || ext == ".jpeg") {
-		std::ofstream file(filepath.c_str(), std::ios_base::out | std::ios_base::binary);
 		boost::gil::rgb8_image_t jpgImg(v.dimensions());
 		auto jpgView = view(jpgImg);
 		copy_and_convert_pixels(v, jpgView); 
@@ -77,9 +77,9 @@ int main(int argc, char** argv)
 		filepath.replace_extension(".tga");
 	}
 	if(ext == ".tga"){
-		boost::gil::write_view(filepath.c_str(), v, boost::gil::targa_tag());
+		boost::gil::write_view(file, v, boost::gil::targa_tag());
 		std::cout << filepath << " written" << std::endl;
 	}
-
+    file.close();
     return 0;
 }

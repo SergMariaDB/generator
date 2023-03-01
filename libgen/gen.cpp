@@ -30,7 +30,8 @@ namespace {
 		{"Result", was}
 	};
 
-	boost::program_options::options_description Options("Options");
+    auto OptionsPtr = std::make_shared<boost::program_options::options_description>("Options");
+	boost::program_options::options_description& Options = *OptionsPtr;
 	gen::options optionValues;
 	auto& desc = Options.add_options()
 		("help,h", "Produce help message")
@@ -44,9 +45,17 @@ namespace {
 
 namespace gen {
 
+std::shared_ptr<boost::program_options::options_description> Optr(){
+    return OptionsPtr;
+}
+
 	boost::program_options::options_description_easy_init& ProgramOptionsDescription() {
 		return desc;
 	}
+
+    boost::program_options::options_description_easy_init& AddCommandLineProgramOption() {
+        return desc;
+    }
 
 	const options& Init(int argc, char** argv)
 	{
